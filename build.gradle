@@ -34,10 +34,10 @@ task('init-dirs') << {
   }
 }
 
-task('clean-dirs') << {
-  def file = file("./workdir")
+task("clean-dirs") << {
+  def file = new File("./workdir")
   if (file.exists()) {
-    file.delete();
+    file.deleteDir()
   }
 }
 
