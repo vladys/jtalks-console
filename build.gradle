@@ -1,0 +1,15 @@
+task ('get-poulpe') << {
+    String address = "http://repo.jtalks.org/content/groups/public/org/jtalks/poulpe/poulpe-web-view/0.18/poulpe-web-view-0.18.war"
+    def file = new FileOutputStream("./workdir/apps/" + address.tokenize("/")[-1])
+    def out = new BufferedOutputStream(file)
+    out << new URL(address).openStream()
+    out.close()
+}
+
+task ('get-server') << {
+    String address = "http://ftp.ps.pl/pub/apache/tomcat/tomcat-6/v6.0.35/bin/" + project['server.name'] + ".zip"
+    def file = new FileOutputStream("./workdir/servers/" + address.tokenize("/")[-1])
+    def out = new BufferedOutputStream(file)
+    out << new URL(address).openStream()
+    out.close()
+}
