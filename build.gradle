@@ -1,25 +1,36 @@
+apply plugin: 'groovy'
+dependencies {
+    compile gradleApi()
+    groovy localGroovy()
+}
+
+task ('releases') << {
+  print new org.jtalks.console.ArtifactVersionsRetriever().poulpeReleaseVersions
+}
+
 task ('get-poulpe') << {
-    String address = "http://repo.jtalks.org/content/groups/public/org/jtalks/poulpe/poulpe-web-view/0.18/poulpe-web-view-0.18.war"
-    def file = new FileOutputStream("./workdir/apps/" + address.tokenize("/")[-1])
-    def out = new BufferedOutputStream(file)
-    out << new URL(address).openStream()
-    out.close()
+  String address = "http://repo.jtalks.org/content/groups/public/org/jtalks/poulpe/poulpe-web-view/0.18/poulpe-web-view-0.18.war"
+  def file = new FileOutputStream("./workdir/apps/" + address.tokenize("/")[-1])
+  def out = new BufferedOutputStream(file)
+  out << new URL(address).openStream()
+  out.close()
 }
 
 task ('get-server') << {
-    String address = "http://ftp.ps.pl/pub/apache/tomcat/tomcat-6/v6.0.35/bin/" + project['server.name'] + ".zip"
-    def file = new FileOutputStream("./workdir/servers/" + address.tokenize("/")[-1])
-    def out = new BufferedOutputStream(file)
-    out << new URL(address).openStream()
-    out.close()
+  String address = "http://ftp.ps.pl/pub/apache/tomcat/tomcat-6/v6.0.35/bin/" + project['server.name'] + ".zip"
+  def file = new FileOutputStream("./workdir/servers/" + address.tokenize("/")[-1])
+  def out = new BufferedOutputStream(file)
+  out << new URL(address).openStream()
+  out.close()
 }
 
 task ('init-dirs') << {
   String []dirs = ["./workdir/apps", "./workdir/servers", "./workdir/configs"]
   for(String dir: dirs){
     File file = new File(dir)
-    if(file.exists()) {
+    if(!file.exists()) {
        file.mkdirs();
     }
-  } 
+  }
 }
+
