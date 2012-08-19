@@ -1,19 +1,15 @@
 import org.jtalks.console.ArtifactVersionsRetriever
 
 apply plugin: 'groovy'
-dependencies {
-  compile gradleApi()
-  groovy localGroovy()
-}
 
-
+def artifactVersionsRetriever = new ArtifactVersionsRetriever()
 task('releases') << {
-  print new ArtifactVersionsRetriever().poulpeReleaseVersionsOutput
-  print new ArtifactVersionsRetriever().jcommuneReleaseVersionsOutput
+  print artifactVersionsRetriever.poulpeReleaseVersionsOutput
+  print artifactVersionsRetriever.jcommuneReleaseVersionsOutput
 }
 
-task('get-poulpe') << {
-  String address = "http://repo.jtalks.org/content/groups/public/org/jtalks/poulpe/poulpe-web-view/0.18/poulpe-web-view-0.18.war"
+task('get-poulpe', dependsOn: 'init-dirs') << {
+  String address = artifactVersionsRetriever.getPoulpeReleasedWarUrl(hasProperty("poulpeVersion") ? poulpeVersion : null)
   def file = new FileOutputStream("./workdir/apps/" + address.tokenize("/")[-1])
   def out = new BufferedOutputStream(file)
   out << new URL(address).openStream()
@@ -35,6 +31,13 @@ task('init-dirs') << {
     if (!file.exists()) {
       file.mkdirs();
     }
+  }
+}
+
+task('clean-dirs') << {
+  def file = file("./workdir")
+  if (file.exists()) {
+    file.delete();
   }
 }
 
