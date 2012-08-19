@@ -8,7 +8,8 @@ dependencies {
 
 
 task('releases') << {
-  print new ArtifactVersionsRetriever().poulpeReleaseVersions
+  print new ArtifactVersionsRetriever().poulpeReleaseVersionsOutput
+  print new ArtifactVersionsRetriever().jcommuneReleaseVersionsOutput
 }
 
 task('get-poulpe') << {
