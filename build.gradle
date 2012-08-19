@@ -13,3 +13,13 @@ task ('get-server') << {
     out << new URL(address).openStream()
     out.close()
 }
+
+task ('init-dirs') << {
+  String []dirs = ["./workdir/apps", "./workdir/servers", "./workdir/configs"]
+  for(String dir: dirs){
+    File file = new File(dir)
+    if(file.exists()) {
+       file.mkdirs();
+    }
+  } 
+}
