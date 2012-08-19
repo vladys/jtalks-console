@@ -9,7 +9,8 @@ task('releases') << {
 }
 
 task('get-poulpe', dependsOn: 'init-dirs') << {
-  String address = artifactVersionsRetriever.getPoulpeReleasedWarUrl(hasProperty("poulpeVersion") ? poulpeVersion : null)
+  String poulpeVersion = project.hasProperty("poulpeVersion")? project.poulpeVersion:null
+  String address = artifactVersionsRetriever.getPoulpeReleasedWarUrl(poulpeVersion)
   def file = new FileOutputStream("./workdir/apps/" + address.tokenize("/")[-1])
   def out = new BufferedOutputStream(file)
   out << new URL(address).openStream()

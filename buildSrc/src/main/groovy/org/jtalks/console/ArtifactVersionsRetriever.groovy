@@ -21,6 +21,7 @@ class ArtifactVersionsRetriever {
     if (version == null) {
       version = poulpeReleaseVersions.last()
     }
+    println "Downloading $version version of Poulpe..."
     POULPE_RELEASES_PAGE + version + "/poulpe-web-view-" + version + ".war"
   }
 
