@@ -1,44 +1,32 @@
 import org.jtalks.console.ArtifactVersionsRetriever
+import org.jtalks.console.WorkDirs
 
 apply plugin: 'groovy'
 
-def artifactVersionsRetriever = new ArtifactVersionsRetriever()
+//script common fields
+ArtifactVersionsRetriever artifactVersionsRetriever = new ArtifactVersionsRetriever()
+WorkDirs workDirs = new WorkDirs()
+
 task('releases') << {
-  print artifactVersionsRetriever.poulpeReleaseVersionsOutput
-  print artifactVersionsRetriever.jcommuneReleaseVersionsOutput
+  artifactVersionsRetriever.poulpeReleaseVersions.printVersions()
+  artifactVersionsRetriever.jcommuneReleaseVersions.printVersions()
 }
 
 task('get-poulpe', dependsOn: 'init-dirs') << {
-  String poulpeVersion = project.hasProperty("poulpeVersion")? project.poulpeVersion:null
+  String poulpeVersion = project.hasProperty("poulpeVersion") ? project.poulpeVersion : null
   String address = artifactVersionsRetriever.getPoulpeReleasedWarUrl(poulpeVersion)
-  def file = new FileOutputStream("./workdir/apps/" + address.tokenize("/")[-1])
-  def out = new BufferedOutputStream(file)
-  out << new URL(address).openStream()
-  out.close()
+  workDirs.downloadJtalksApp(address)
 }
 
 task('get-server') << {
-  String address = "http://ftp.ps.pl/pub/apache/tomcat/tomcat-6/v6.0.35/bin/" + project['server.name'] + ".zip"
-  def file = new FileOutputStream("./workdir/servers/" + address.tokenize("/")[-1])
-  def out = new BufferedOutputStream(file)
-  out << new URL(address).openStream()
-  out.close()
+  workDirs.downloadTomcat(project['server.name'])
 }
 
 task('init-dirs') << {
-  String[] dirs = ["./workdir/apps", "./workdir/servers", "./workdir/configs"]
-  for (String dir : dirs) {
-    File file = new File(dir)
-    if (!file.exists()) {
-      file.mkdirs();
-    }
-  }
+  workDirs.createDirs()
 }
 
 task("clean-dirs") << {
-  def file = new File("./workdir")
-  if (file.exists()) {
-    file.deleteDir()
-  }
+  workDirs.removeDirs()
 }
 
