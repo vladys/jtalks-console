@@ -7,6 +7,10 @@ apply plugin: 'groovy'
 ArtifactVersionsRetriever artifactVersionsRetriever = new ArtifactVersionsRetriever()
 WorkDirs workDirs = new WorkDirs()
 
+task('install-poulpe') {
+
+}
+
 task('releases') << {
   artifactVersionsRetriever.poulpeReleaseVersions.printVersions()
   artifactVersionsRetriever.jcommuneReleaseVersions.printVersions()
@@ -18,8 +22,8 @@ task('get-poulpe', dependsOn: 'init-dirs') << {
   workDirs.downloadJtalksApp(address)
 }
 
-task('get-server') << {
-  workDirs.downloadTomcat(project['server.name'])
+task('get-server', dependsOn: 'init-dirs') << {
+  workDirs.downloadTomcat()
 }
 
 task('init-dirs') << {
