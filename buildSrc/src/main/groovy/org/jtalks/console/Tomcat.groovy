@@ -31,7 +31,9 @@ class Tomcat {
   }
 
   void stop() {
-    "ps aux | grep $homeDir | grep -v grep | awk '{print \$2}'| xargs kill -9".execute()
+    String killCommand = "ps aux | grep " + homeDir.replaceFirst('.', '') + "| grep -v grep | awk '{print \$2}'| xargs kill -9"
+    print "[JTALKS] Killing: $killCommand"
+    killCommand.execute()
   }
 
 
