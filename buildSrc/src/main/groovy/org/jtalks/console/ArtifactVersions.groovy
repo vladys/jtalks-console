@@ -4,9 +4,6 @@ package org.jtalks.console
  * @author stanislav bashkirtsev
  */
 class ArtifactVersions {
-  private final String projectName;
-  private final List<String> versions = []
-
   ArtifactVersions(String projectName, List<String> versions) {
     this.versions.addAll(versions)
     this.projectName = projectName;
@@ -19,4 +16,7 @@ class ArtifactVersions {
   public List<String> getVersionList() {
     versions
   }
+
+  private final String projectName;
+  private final List<String> versions = []
 }

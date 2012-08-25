@@ -16,16 +16,11 @@ class ArtifactVersionsRetriever {
     return new ArtifactVersions("JCommune", getVersions(JCOMMUNE_RELEASES_PAGE))
   }
 
-  /**
-   *
-   * @param version
-   * @return
-   */
   public String getPoulpeReleasedWarUrl(@Nullable String version) {
     if (version == null) {
       version = poulpeReleaseVersions.versionList.last()
     }
-    println "Downloading $version version of Poulpe..."
+    println "[JTALKS] Downloading $version version of Poulpe..."
     POULPE_RELEASES_PAGE + version + "/poulpe-web-view-" + version + ".war"
   }
 

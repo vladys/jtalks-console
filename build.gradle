@@ -7,9 +7,13 @@ apply plugin: 'groovy'
 ArtifactVersionsRetriever artifactVersionsRetriever = new ArtifactVersionsRetriever()
 WorkDirs workDirs = new WorkDirs()
 
-task('install-poulpe', dependsOn: ['init-dirs', 'get-server', 'get-poulpe']) << {
+task('start-poulpe', dependsOn: ['init-dirs', 'get-server', 'get-poulpe']) << {
   workDirs.unpackPoulpe()
   workDirs.startTomcat()
+}
+
+task('stop-poulpe') << {
+  workDirs.stopTomcat()
 }
 
 task('releases') << {

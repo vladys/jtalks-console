@@ -4,9 +4,6 @@ package org.jtalks.console
  * @author stanislav bashkirtsev
  */
 class WorkDirs {
-  private final String[] dirs = ["./workdir/apps/", "./workdir/servers/", "./workdir/configs/", "./workdir/deployed/"]
-  private final def config = new ConfigSlurper().parse(new File("gradle.properties").toURL())
-  final downloadedAppsDir = dirs[0], webServersDir = dirs[1], configsDir = dirs[2], deployedAppsDir = dirs[3]
 
   void createDirs() {
     for (String dir : dirs) {
@@ -37,23 +34,24 @@ class WorkDirs {
       fileset(dir: downloadedAppsDir) {
         include(name: "*.war")
       }
+      globmapper(from: "poulpe*", to: "poulpe.war")
     }
   }
 
-  void startTomcat(){
-    new Tomcat(deployedAppsDir + config.server.name).start()
+  void startTomcat() {
+    new Tomcat(this).start()
+  }
+
+  void stopTomcat() {
+    new Tomcat(this).stop()
   }
 
   void downloadTomcat() {
-    String address = "http://ftp.ps.pl/pub/apache/tomcat/tomcat-6/v6.0.35/bin/" + config.server.name + ".zip"
-    def file = new FileOutputStream(webServersDir + address.tokenize("/")[-1])
-    def out = new BufferedOutputStream(file)
-    out << new URL(address).openStream()
-    out.close()
-
-    def ant = new AntBuilder()
-    ant.unzip(src: webServersDir + config.server.name + ".zip",
-        dest: deployedAppsDir,
-        overwrite: "false")
+    new Tomcat(this).download()
   }
+
+  static final String FROM_LONG_WAR_REGEX = /(-web-view.*)/
+  private static final String[] dirs = ["./workdir/apps/", "./workdir/servers/", "./workdir/configs/", "./workdir/deployed/"]
+  static final downloadedAppsDir = dirs[0], webServersDir = dirs[1], configsDir = dirs[2], deployedAppsDir = dirs[3]
+  private final def config = new ConfigSlurper().parse(new File("gradle.properties").toURL())
 }
