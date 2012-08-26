@@ -1,6 +1,6 @@
 import org.jtalks.console.ArtifactVersionsRetriever
 import org.jtalks.console.WorkDirs
-import org.jtalks.console.env.EnvInstaller
+import org.jtalks.console.env.Environment
 
 apply plugin: 'groovy'
 
@@ -40,9 +40,14 @@ task('clean-dirs') << {
   workDirs.removeDirs()
 }
 
+task('start-env') << {
+  Environment environment = Environment.create("./software-packages.xml")
+  environment.install()
+}
+
 task('install-env') << {
-  EnvInstaller installer = EnvInstaller.create("./packages-to-install.xml")
-  installer.installAllPackages()
+  Environment environment = Environment.create("./software-packages.xml")
+  environment.install()
 }
 
 task createWrapper(type: Wrapper) {

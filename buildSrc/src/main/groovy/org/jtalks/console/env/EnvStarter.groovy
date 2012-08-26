@@ -3,21 +3,21 @@ package org.jtalks.console.env
 /**
  * @author stanislav bashkirtsev
  */
-class EnvInstaller {
+class EnvStarter {
   private final Node xmlWithPackages;
 
-  EnvInstaller(Node xmlWithPackages) {
+  EnvStarter(Node xmlWithPackages) {
     this.xmlWithPackages = xmlWithPackages
   }
 
-  static EnvInstaller create(String packagesFile) {
+  static EnvStarter create(String packagesFile) {
     Node xml = new XmlParser().parse(packagesFile)
-    new EnvInstaller(xml)
+    new EnvStarter(xml)
   }
 
-  void installAllPackages() {
-    println '[JTALKS] Installing software in order to run JTalks apps..'
-    allInstallCommands.each() {
+  void startPackagesWithSpecifiedStartCommand() {
+    println '[JTALKS] Starting software in order to run JTalks apps..'
+    allStartCommands.each() {
       println "[JTALKS] $it"
       Process proc = "$it".execute()
       proc.waitFor()
@@ -33,11 +33,7 @@ class EnvInstaller {
     }
   }
 
-  List<String> getAllInstallCommands() {
-    def allCommands = []
-    for (software in xmlWithPackages.software) {
-      allCommands.add("yum install " + software."@name" + " -v " + software."@version" + " -y")
-    }
-    allCommands
+  List<String> getAllStartCommands() {
+    xmlWithPackages.depthFirst().grep {it."@start"}."@start"
   }
 }

@@ -1,0 +1,6 @@
+<packages>
+  <software name="mysql-server" version="5.5">
+    <commands os="centOS" start="/etc/init.d/mysqld start" stop="/etc/init.d/mysqld stop"/>
+  </software>
+  <software name="mysql" version="5.5"/>
+</packages>
