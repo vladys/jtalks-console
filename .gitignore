@@ -4,6 +4,7 @@
 
 # Directory where everything is kept
 workdir
+buildSrc/build
 
 # Eclipse project files
 .settings
@@ -25,6 +26,7 @@ nbproject
 
 # Always ignore these directories/files
 target
+out
 logs
 
 #Maven version-plugin backup-files ignore
