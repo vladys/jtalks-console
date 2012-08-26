@@ -15,6 +15,16 @@ class EnvStarter {
     new EnvStarter(xml)
   }
 
+  void stopPackagesWithSpecifiedStopCommand() {
+    println '[JTALKS] Stopping software in order to run JTalks apps..'
+    allStopCommands.each() {
+      println "[JTALKS] $it"
+      Process proc = "$it".execute()
+      proc.waitFor()
+      printInfoIfError(proc)
+    }
+  }
+
   void startPackagesWithSpecifiedStartCommand() {
     println '[JTALKS] Starting software in order to run JTalks apps..'
     allStartCommands.each() {
@@ -31,6 +41,10 @@ class EnvStarter {
       println "[ERROR JTALKS] Return Code: ${process.exitValue()}"
       println "[ERROR JTALKS] Details: ${process.err.text}"
     }
+  }
+
+  List<String> getAllStopCommands() {
+    xmlWithPackages.depthFirst().grep {it."@stop"}."@stop"
   }
 
   List<String> getAllStartCommands() {

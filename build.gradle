@@ -41,6 +41,10 @@ task('clean-dirs') << {
   workDirs.removeDirs()
 }
 
+task('stop-env') << {
+  environment.stop()
+}
+
 task('start-env') << {
   environment.start()
 }

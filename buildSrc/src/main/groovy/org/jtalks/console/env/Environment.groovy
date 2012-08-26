@@ -20,6 +20,10 @@ class Environment {
     starter.startPackagesWithSpecifiedStartCommand()
   }
 
+  void stop() {
+    starter.stopPackagesWithSpecifiedStopCommand()
+  }
+
   static Environment create(String packagesFile) {
     Node xml = new XmlParser().parse(packagesFile)
     new Environment(new EnvInstaller(xml), new EnvStarter(xml))

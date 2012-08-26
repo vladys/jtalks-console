@@ -5,11 +5,18 @@ package org.jtalks.console.env
  */
 class EnvStarterTest extends GroovyTestCase {
 
+  void testGetAllStopCommands() {
+    List<String> commands = EnvStarter.create(environmentFile).allStopCommands
+    assert !commands.empty
+    assert commands.first() == "/etc/init.d/mysqld stop"
+  }
 
   void testGetAllStartCommands() {
-    String file = new File("./software-packages.xml").exists() ? "./software-packages.xml" : "../software-packages.xml"
-    List<String> commands = EnvStarter.create(file).allStartCommands
+    List<String> commands = EnvStarter.create(environmentFile).allStartCommands
     assert !commands.empty
     assert commands.first() == "/etc/init.d/mysqld start"
   }
+
+  private final static String FILE_NAME = "software-packages.xml"
+  private final String environmentFile = new File("./$FILE_NAME").exists() ? "./$FILE_NAME" : "../$FILE_NAME"
 }
