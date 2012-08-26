@@ -16,7 +16,20 @@ class EnvInstaller {
   }
 
   void installAllPackages() {
-    allInstallCommands.each() {"${it}".execute()}
+    println '[JTALKS] Installing software in order run JTalks apps..'
+    allInstallCommands.each() {
+      println "[JTALKS] $it"
+      Process proc = "$it".execute()
+      proc.waitFor()
+      printInfoIfError(proc)
+    }
+  }
+
+  private void printInfoIfError(Process process) {
+    if (process.exitValue() != 0) {
+      println "return code: ${process.exitValue()}"
+      println "Errors: ${process.err.text}"
+    }
   }
 
   List<String> getAllInstallCommands() {
