@@ -26,9 +26,10 @@ class EnvInstaller {
   }
 
   private void printInfoIfError(Process process) {
+    println "[JTALKS] ${proc.in.text}"
     if (process.exitValue() != 0) {
-      println "return code: ${process.exitValue()}"
-      println "Errors: ${process.err.text}"
+      println "[ERROR JTALKS] Return Code: ${process.exitValue()}"
+      println "[ERROR JTALKS] Details: ${process.err.text}"
     }
   }
 
