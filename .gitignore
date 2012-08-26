@@ -5,6 +5,7 @@
 # Directory where everything is kept
 workdir
 buildSrc/build
+build
 
 # Eclipse project files
 .settings

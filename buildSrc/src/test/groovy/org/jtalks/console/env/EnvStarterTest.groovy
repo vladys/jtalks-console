@@ -7,7 +7,8 @@ class EnvStarterTest extends GroovyTestCase {
 
 
   void testGetAllStartCommands() {
-    List<String> commands = EnvStarter.create("./software-packages.xml").allStartCommands
+    String file = new File("./software-packages.xml").exists() ? "./software-packages.xml" : "../software-packages.xml"
+    List<String> commands = EnvStarter.create(file).allStartCommands
     assert !commands.empty
     assert commands.first() == "/etc/init.d/mysqld start"
   }
